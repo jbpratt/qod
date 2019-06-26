@@ -1,8 +1,3 @@
-# Quote of the Day API wrapper
-
-### usage
-
-```go
 package main
 
 import (
@@ -20,4 +15,3 @@ func main() {
 	}
 	fmt.Println(res)
 }
-```
