@@ -1,3 +1,4 @@
+[![GoDoc](https://godoc.org/github.com/jbpratt78/qod?status.svg)](https://godoc.org/github.com/jbpratt78/qod)
 # Quote of the Day API wrapper
 
 ### usage

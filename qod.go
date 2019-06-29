@@ -5,7 +5,8 @@ import (
 	"net/url"
 )
 
-type QODResponse struct {
+// Response returns a slice of quotes
+type Response struct {
 	Success struct {
 		Total int `json:"total"`
 	} `json:"success"`
@@ -24,7 +25,8 @@ type QODResponse struct {
 	} `json:"contents"`
 }
 
-type QODCategoriesResponse struct {
+// CategoriesResponse contains all of the QOD categories
+type CategoriesResponse struct {
 	Success struct {
 		Total int `json:"total"`
 	} `json:"success"`
@@ -43,7 +45,8 @@ type QODCategoriesResponse struct {
 	} `json:"contents"`
 }
 
-type QODCategoryResponse struct {
+// CategoryResponse is a slice of quotes by category
+type CategoryResponse struct {
 	Success struct {
 		Total int `json:"total"`
 	} `json:"success"`
@@ -62,16 +65,15 @@ type QODCategoryResponse struct {
 	} `json:"contents"`
 }
 
-// GetQuoteOfTheDay requests the quote of the
-// day and returns it in a struct
-func (c *Client) GetQuoteOfTheDay() (*QODResponse, error) {
+// GetQuoteOfTheDay requests the quote of the day
+func (c *Client) GetQuoteOfTheDay() (*Response, error) {
 
-	res, err := c.Get(uri+"qod", nil)
+	res, err := c.get(uri+"qod", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	var r QODResponse
+	var r Response
 	dec := json.NewDecoder(res.Body)
 	err = dec.Decode(&r)
 	if err != nil {
@@ -81,13 +83,14 @@ func (c *Client) GetQuoteOfTheDay() (*QODResponse, error) {
 	return &r, nil
 }
 
-func (c *Client) GetQODCategories() (*QODCategoriesResponse, error) {
+// GetCategories requests all of the QOD categories
+func (c *Client) GetCategories() (*CategoriesResponse, error) {
 
-	res, err := c.Get(uri+"qod/categories", nil)
+	res, err := c.get(uri+"qod/categories", nil)
 	if err != nil {
 		return nil, err
 	}
-	var r QODCategoriesResponse
+	var r CategoriesResponse
 	dec := json.NewDecoder(res.Body)
 	err = dec.Decode(&r)
 	if err != nil {
@@ -97,7 +100,8 @@ func (c *Client) GetQODCategories() (*QODCategoriesResponse, error) {
 	return &r, nil
 }
 
-func (c *Client) GetQODByCategory(category string) (*QODCategoryResponse, error) {
+// GetByCategory requests the QOD by category
+func (c *Client) GetByCategory(category string) (*CategoryResponse, error) {
 
 	u, err := url.Parse(uri + "qod")
 	if err != nil {
@@ -108,12 +112,12 @@ func (c *Client) GetQODByCategory(category string) (*QODCategoryResponse, error)
 	q.Set("category", category)
 	u.RawQuery = q.Encode()
 
-	res, err := c.Get(u.String(), nil)
+	res, err := c.get(u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	var r QODCategoryResponse
+	var r CategoryResponse
 	dec := json.NewDecoder(res.Body)
 	err = dec.Decode(&r)
 	if err != nil {

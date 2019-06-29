@@ -11,7 +11,7 @@ const uri = "http://quotes.rest/"
 
 type Client struct{}
 
-func (c *Client) Get(url string, headers map[string]string) (*http.Response, error) {
+func (c *Client) get(url string, headers map[string]string) (*http.Response, error) {
 	req, err := buildRequest("GET", url, headers)
 	if err != nil {
 		return nil, err
